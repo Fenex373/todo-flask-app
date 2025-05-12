@@ -1,33 +1,60 @@
 {% extends "base.html" %}
 
+{% block title %}Todo + XP System{% endblock %}
+
 {% block body %}
     <h1>Todo Flow</h1>
 
+    <div class="level-box">
+        <p><strong>Level:</strong> {{ user.level }}</p>
+        <p><strong>XP:</strong> {{ user.xp }}</p>
+        <p><strong>Rank:</strong> {{ user.rank }}</p>
+    </div>
+
     <form method="POST">
-        <input type="text" name="content" placeholder="Dodaj se jakieś zadanie" required>
-        <button type="submit">Dodaj zadanie</button>
+        <input type="text" name="content" placeholder="Dodaj nowe zadanie">
+        <select name="difficulty">
+            <option value="1">Łatwe</option>
+            <option value="2">Średnie</option>
+            <option value="3">Trudne</option>
+        </select>
+        <input type="submit" value="➕ Dodaj" class="btn btn-add">
     </form>
 
-    {% if tasks|length < 1 %}
-        <h3>Ni masz zadań byczku. Stwórz se jakieś</h3>
-    {% else %}
-        <table>
-            <tr>
-                <th>Zadanie</th>
-                <th>Dodane</th>
-                <th>Akcje</th>
-            </tr>
-            {% for task in tasks %}
-            <tr>
-                <td>{{ task.content }}</td>
-                <td>{{ task.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
-                <td>
-                    <a href="{{ url_for('delete', id=task.id) }}">Usuń</a>
-                    <br>
-                    <a href="{{ url_for('update', id=task.id) }}">Aktualizuj</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-    {% endif %}
+    <ul>
+        {% for task in tasks %}
+        <li class="task
+            {% if task.difficulty == 1 %}easy{% elif task.difficulty == 2 %}medium{% elif task.difficulty == 3 %}hard{% endif %}">
+
+            <strong>{{ task.content }}</strong>
+            <br>
+           <div class="task-difficulty">
+    <span>🧠 Trudność:</span>
+    <strong>
+        {% if task.difficulty == 1 %}Łatwe
+        {% elif task.difficulty == 2 %}Średnie
+        {% elif task.difficulty == 3 %}Trudne
+        {% endif %}
+    </strong>
+           </div>
+
+
+            <div class="buttons">
+                {% if not task.completed %}
+                    <a href="/complete/{{ task.id }}" class="btn btn-complete">✅ Wykonane</a>
+                {% else %}
+                    <span style="color: #27ae60;">(Zakończone)</span>
+                {% endif %}
+                <a href="/update/{{ task.id }}" class="btn btn-edit">✏️ Edytuj</a>
+                <a href="/delete/{{ task.id }}" class="btn btn-delete">🗑️ Usuń</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+    {% with messages = get_flashed_messages(category_filter=["level_up"]) %}
+        {% if messages %}
+            <div class="popup">{{ messages[0] }}</div>
+        {% endif %}
+    {% endwith %}
 {% endblock %}

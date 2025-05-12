@@ -49,43 +49,201 @@ button:hover {
     background-color: #2980b9;
 }
 
-h3 {
-    text-align: center;
-    color: #7f8c8d;
-    font-style: italic;
+ul {
+    list-style-type: none;
+    padding: 0;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+li.task {
     background-color: white;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-th, td {
-    text-align: left;
     padding: 15px;
-    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-th {
-    background-color: #ecf0f1;
-    color: #2c3e50;
-    font-weight: 600;
-}
-
-td a {
-    color: #e74c3c;
+li.task a {
+    margin-left: 10px;
     text-decoration: none;
-    font-weight: bold;
+    color: #3498db;
 }
 
-td a:hover {
+li.task a:hover {
     text-decoration: underline;
 }
 
-td a + br + a {
-    color: #27ae60;
+.level-box {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    margin-bottom: 30px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
+
+.level-box h2 {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    color: #2c3e50;
+}
+
+.level-box p {
+    margin: 4px 0;
+    font-size: 1.1rem;
+    color: #34495e;
+}
+
+.popup {
+    position: fixed;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #2ecc71;
+    color: white;
+    padding: 20px 30px;
+    border-radius: 15px;
+    font-size: 1.5rem;
+    text-align: center;
+    z-index: 999;
+    opacity: 0;
+    animation: fadeinout 3s ease-in-out;
+}
+
+@keyframes fadeinout {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@media (max-width: 600px) {
+    form {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    input[type="text"] {
+        width: 100%;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .level-box {
+        padding: 15px;
+    }
+}
+.task {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    list-style-type: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s ease;
+}
+
+
+.easy {
+    background-color: #d4edda; /* pastelowy zielony */
+    border-left: 5px solid #28a745;
+}
+
+.medium {
+    background-color: #fff3cd; /* pastelowy żółty */
+    border-left: 5px solid #ffc107;
+}
+
+.hard {
+    background-color: #f8d7da; /* pastelowy czerwony */
+    border-left: 5px solid #dc3545;
+}
+
+/* Przyciski */
+.buttons {
+    margin-top: 8px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-right: 6px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    color: white !important;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-complete {
+    background-color: #28a745;
+}
+
+.btn-edit {
+    background-color: #007bff;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+}
+
+.btn:hover {
+    filter: brightness(90%);
+}
+.btn-add {
+   padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-add:hover {
+     background-color: #2980b9;
+}
+select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+select:focus {
+    outline: none;
+    border-color: #17a2b8;
+    box-shadow: 0 0 3px rgba(23, 162, 184, 0.5);
+}
+
+option {
+    font-size: 14px;
+    padding: 6px;
+}
+.task-difficulty {
+    font-size: 14px;
+    margin: 4px 0 8px 0;
+    color: #555;
+}
+.task-difficulty strong {
+    margin-left: 4px;
+    text-transform: capitalize;
+}
+
+
+
+
