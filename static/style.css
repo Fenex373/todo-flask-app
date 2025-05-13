@@ -147,25 +147,31 @@ li.task a:hover {
     list-style-type: none;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     transition: background-color 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap
+}
+.task-main {
+    flex: 1;
+    min-width: 200px;
 }
 
-
 .easy {
-    background-color: #d4edda; /* pastelowy zielony */
+    background-color: #d4edda;
     border-left: 5px solid #28a745;
 }
 
 .medium {
-    background-color: #fff3cd; /* pastelowy żółty */
+    background-color: #fff3cd;
     border-left: 5px solid #ffc107;
 }
 
 .hard {
-    background-color: #f8d7da; /* pastelowy czerwony */
+    background-color: #f8d7da;
     border-left: 5px solid #dc3545;
 }
 
-/* Przyciski */
 .buttons {
     margin-top: 8px;
 }

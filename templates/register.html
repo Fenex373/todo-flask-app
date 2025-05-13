@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Rejestracja - Todo Flow{% endblock %}
+
+{% block body %}
+<h1>Rejestracja</h1>
+<form method="POST">
+    <input type="text" name="username" placeholder="Nazwa użytkownika" required>
+    <input type="password" name="password" placeholder="Hasło" required>
+    <button type="submit">Zarejestruj się</button>
+</form>
+
+<p style="text-align:center; margin-top: 10px;">
+    Masz już konto?
+    <a href="{{ url_for('login') }}">Zaloguj się</a>
+</p>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="popup {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+{% endblock %}

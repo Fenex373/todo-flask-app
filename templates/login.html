@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Logowanie - Todo Flow{% endblock %}
+
+{% block body %}
+<h1>Zaloguj się</h1>
+<form method="POST">
+    <input type="text" name="username" placeholder="Nazwa użytkownika" required>
+    <input type="password" name="password" placeholder="Hasło" required>
+    <button type="submit">Zaloguj</button>
+</form>
+
+<p style="text-align:center; margin-top: 10px;">
+    Nie masz konta?
+    <a href="{{ url_for('register') }}">Zarejestruj się</a>
+</p>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="popup {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+{% endblock %}

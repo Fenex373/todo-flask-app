@@ -4,51 +4,52 @@
 
 {% block body %}
     <h1>Todo Flow</h1>
+    <div style="text-align: center; margin-bottom: 20px;">
+    <a href="{{ url_for('logout') }}" class="btn btn-delete">Wyloguj się</a>
+    </div>
 
     <div class="level-box">
-        <p><strong>Level:</strong> {{ user.level }}</p>
-        <p><strong>XP:</strong> {{ user.xp }}</p>
-        <p><strong>Rank:</strong> {{ user.rank }}</p>
+        <p><strong>Twój obecny level:</strong> {{ current_user.level }}</p>
+        <p><strong>Punkty XP:</strong> {{ current_user.xp }}</p>
+        <p><strong>Ranga:</strong> {{ current_user.rank }}</p>
     </div>
 
     <form method="POST">
-        <input type="text" name="content" placeholder="Dodaj nowe zadanie">
+        <input type="text" name="content" placeholder="Dodaj nowe zadanie" required>
         <select name="difficulty">
             <option value="1">Łatwe</option>
             <option value="2">Średnie</option>
             <option value="3">Trudne</option>
         </select>
-        <input type="submit" value="➕ Dodaj" class="btn btn-add">
+        <input type="submit" value="Dodaj" class="btn btn-add">
     </form>
 
     <ul>
         {% for task in tasks %}
-        <li class="task
-            {% if task.difficulty == 1 %}easy{% elif task.difficulty == 2 %}medium{% elif task.difficulty == 3 %}hard{% endif %}">
-
-            <strong>{{ task.content }}</strong>
-            <br>
-           <div class="task-difficulty">
-    <span>🧠 Trudność:</span>
-    <strong>
-        {% if task.difficulty == 1 %}Łatwe
-        {% elif task.difficulty == 2 %}Średnie
-        {% elif task.difficulty == 3 %}Trudne
-        {% endif %}
-    </strong>
-           </div>
-
-
-            <div class="buttons">
-                {% if not task.completed %}
-                    <a href="/complete/{{ task.id }}" class="btn btn-complete">✅ Wykonane</a>
-                {% else %}
-                    <span style="color: #27ae60;">(Zakończone)</span>
+       <li class="task {% if task.difficulty == 1 %}easy{% elif task.difficulty == 2 %}medium{% elif task.difficulty == 3 %}hard{% endif %}">
+    <div class="task-main">
+        <strong>{{ task.content }}</strong>
+        <div class="task-difficulty">
+            <span>Trudność:</span>
+            <strong>
+                {% if task.difficulty == 1 %}Łatwe
+                {% elif task.difficulty == 2 %}Średnie
+                {% elif task.difficulty == 3 %}Trudne
                 {% endif %}
-                <a href="/update/{{ task.id }}" class="btn btn-edit">✏️ Edytuj</a>
-                <a href="/delete/{{ task.id }}" class="btn btn-delete">🗑️ Usuń</a>
-            </div>
-        </li>
+            </strong>
+        </div>
+    </div>
+    <div class="buttons">
+        {% if not task.completed %}
+            <a href="/complete/{{ task.id }}" class="btn btn-complete">Wykonane</a>
+        {% else %}
+            <span style="color: #27ae60;">(Zakończone)</span>
+        {% endif %}
+        <a href="/update/{{ task.id }}" class="btn btn-edit">Edytuj</a>
+        <a href="/delete/{{ task.id }}" class="btn btn-delete">Usuń</a>
+    </div>
+</li>
+
         {% endfor %}
     </ul>
 
