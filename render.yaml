@@ -3,5 +3,10 @@ services:
     name: todo-flask
     env: python
     plan: free
-    buildCommand: pip install -r requirements.txt
+    buildCommand: |
+      pip install -r requirements.txt
+      python init_db.py
     startCommand: gunicorn app:app
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:////data/test.db
