@@ -7,7 +7,7 @@ from datetime import datetime
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////data/test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'secret'
 
@@ -174,6 +174,10 @@ def complete(id):
 def internal_error(e):
     import traceback
     return f"<pre>{traceback.format_exc()}</pre>", 500
+@app.before_first_request
+def create_tables():
+    db.create_all()
+
 
 # Uruchomienie aplikacji z migracjami
 if __name__ == "__main__":
