@@ -21,6 +21,10 @@ login_manager.login_message = 'Musisz się zalogować, aby uzyskać dostęp do t
 
 migrate = Migrate(app, db)
 
+with app.app_context():
+    db.create_all()
+
+
 RANKS = {
     1: "Początkujący productive świr",
     2: "Nowicjusz produktywności",
