@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: todo-db-init
+    runtime: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python init_db.py"
+    envVars:
+      - key: DATABASE_URL
+        fromService:
+          name: todo-main-app  # tu wpisz nazwę Twojej głównej aplikacji
+          type: web
+          property: env.DATABASE_URL
+    plan: free
