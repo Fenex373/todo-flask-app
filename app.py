@@ -5,21 +5,22 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import os
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+instance_path = os.path.join(basedir, 'instance')
 
-
-
-
-
+# Tworzymy folder 'instance', jeśli nie istnieje
+if not os.path.exists(instance_path):
+    os.makedirs(instance_path)
 
 app = Flask(__name__)
 
-basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
     "DATABASE_URL",
-    "sqlite:///" + os.path.join(basedir, 'instance', 'local.db')
+    "sqlite:///" + os.path.join(instance_path, 'local.db')  # używaj instance_path, bo już masz
 )
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = os.getenv("SECRET_KEY", "supertajnyklucztodoflow123!@#G")
+
 
 
 
