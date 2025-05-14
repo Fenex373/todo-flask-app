@@ -174,14 +174,10 @@ def complete(id):
 def internal_error(e):
     import traceback
     return f"<pre>{traceback.format_exc()}</pre>", 500
-@app.before_first_request
-def create_tables():
-    db.create_all()
 
 
-# Uruchomienie aplikacji z migracjami
+
 if __name__ == "__main__":
     with app.app_context():
-        # Tworzenie wszystkich tabel, jeśli jeszcze nie istnieją
-        db.create_all()  # Możesz także użyć 'migrate' jeśli używasz flask-migrate
+        db.create_all()
     app.run(debug=True)
