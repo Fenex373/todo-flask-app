@@ -9,4 +9,4 @@ services:
     startCommand: gunicorn app:app
     envVars:
       - key: DATABASE_URL
-        value: sqlite:////data/test.db
+        value: sqlite:////data/db.sqlite3
