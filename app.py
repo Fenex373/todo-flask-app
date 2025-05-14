@@ -3,16 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-
-app = Flask(__name__)
+from flask_migrate import Migrate
 import os
 
-db_url = os.getenv('DATABASE_URL')
-if db_url and db_url.startswith('postgres://'):
-    db_url = db_url.replace('postgres://', 'postgresql://', 1)  # poprawka dla SQLAlchemy
+app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = db_url or 'sqlite:///test.db'
-
+# Ustawienie SQLite jako domyślna baza danych
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'secret'
 
@@ -22,7 +19,7 @@ login_manager.login_view = 'login'
 login_manager.init_app(app)
 login_manager.login_message = 'Musisz się zalogować, aby uzyskać dostęp do tej strony.'
 
-
+migrate = Migrate(app, db)
 
 RANKS = {
     1: "Początkujący productive świr",
@@ -55,7 +52,6 @@ DIFFICULTY_XP = {
     3: 25,
 }
 
-
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
@@ -73,11 +69,9 @@ class Todo(db.Model):
     date_created = db.Column(db.DateTime, default=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
 
 def add_xp(user, xp_amount=2):
     user.xp += xp_amount
@@ -86,7 +80,6 @@ def add_xp(user, xp_amount=2):
         user.rank = RANKS.get(user.level, user.rank)
         flash(f'🎉 Gratulacje! Osiągnąłeś poziom {user.level}: {user.rank}!', 'level_up')
     db.session.commit()
-
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -135,7 +128,6 @@ def index():
     tasks = Todo.query.filter_by(user_id=current_user.id).all()
     return render_template('index.html', tasks=tasks)
 
-
 @app.route("/delete/<int:id>")
 @login_required
 def delete(id):
@@ -175,6 +167,11 @@ def complete(id):
     xp_reward = DIFFICULTY_XP.get(task.difficulty, 2)
     add_xp(current_user, xp_reward)
     return redirect('/')
+
+@app.errorhandler(500)
+def internal_error(e):
+    import traceback
+    return f"<pre>{traceback.format_exc()}</pre>", 500
 
 if __name__ == "__main__":
     with app.app_context():
