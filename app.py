@@ -30,6 +30,10 @@ login_manager.login_view = 'login'
 login_manager.init_app(app)
 login_manager.login_message = 'Musisz się zalogować, aby uzyskać dostęp do tej strony.'
 
+if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
+    app.run(debug=True)
 
 
 RANKS = {
@@ -189,9 +193,3 @@ def internal_error(e):
     import traceback
     return f"<pre>{traceback.format_exc()}</pre>", 500
 
-
-
-if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True)
