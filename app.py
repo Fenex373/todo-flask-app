@@ -11,7 +11,6 @@ import os
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///local.db")
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////data/test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'secret'
 
@@ -92,6 +91,7 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        print(f"Username: {username}, Password: {password}")  # Dodaj to
         if User.query.filter_by(username=username).first():
             flash('Użytkownik już istnieje', 'error')
         else:
@@ -102,6 +102,7 @@ def register():
             flash('Rejestracja zakończona sukcesem. Możesz się zalogować.', 'success')
             return redirect(url_for('login'))
     return render_template('register.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
