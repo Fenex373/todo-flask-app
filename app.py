@@ -3,15 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-from flask_migrate import Migrate
-import os
 
 app = Flask(__name__)
 
-# Ustawienie SQLite jako domyślna baza danych
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'secret'
+
 
 db = SQLAlchemy(app)
 login_manager = LoginManager()
@@ -19,10 +18,6 @@ login_manager.login_view = 'login'
 login_manager.init_app(app)
 login_manager.login_message = 'Musisz się zalogować, aby uzyskać dostęp do tej strony.'
 
-migrate = Migrate(app, db)
-
-with app.app_context():
-    db.create_all()
 
 
 RANKS = {
@@ -50,12 +45,14 @@ LEVEL_XP = {
     9: 10000,
     10: 15000
 }
+
 DIFFICULTY_XP = {
     1: 2,
     2: 10,
     3: 25,
 }
 
+# Model użytkownika
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
@@ -65,6 +62,7 @@ class User(db.Model, UserMixin):
     rank = db.Column(db.String(50), default=RANKS[1])
     tasks = db.relationship('Todo', backref='user', lazy=True)
 
+# Model zadania
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(200), nullable=False)
@@ -177,7 +175,9 @@ def internal_error(e):
     import traceback
     return f"<pre>{traceback.format_exc()}</pre>", 500
 
+# Uruchomienie aplikacji z migracjami
 if __name__ == "__main__":
     with app.app_context():
-        db.create_all()
+        # Tworzenie wszystkich tabel, jeśli jeszcze nie istnieją
+        db.create_all()  # Możesz także użyć 'migrate' jeśli używasz flask-migrate
     app.run(debug=True)
